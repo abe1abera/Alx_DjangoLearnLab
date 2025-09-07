@@ -71,3 +71,22 @@ def member_view(request):
     return render(request, "relationship_app/member_view.html")
 
     
+# --- existing imports and views above ---
+
+from django.contrib.auth.decorators import permission_required
+from django.http import HttpResponse
+
+# Add Book (requires custom permission)
+@permission_required("relationship_app.can_add_book")
+def add_book(request):
+    return HttpResponse("You have permission to add a book.")
+
+# Edit Book (requires custom permission)
+@permission_required("relationship_app.can_change_book")
+def edit_book(request, book_id):
+    return HttpResponse(f"You can edit book with ID {book_id}.")
+
+# Delete Book (requires custom permission)
+@permission_required("relationship_app.can_delete_book")
+def delete_book(request, book_id):
+    return HttpResponse(f"You can delete book with ID {book_id}.")
