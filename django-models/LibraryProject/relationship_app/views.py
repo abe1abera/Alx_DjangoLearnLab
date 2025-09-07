@@ -1,14 +1,15 @@
-from django.shortcuts import render, get_object_or_404
-from django.views.generic.detail import DetailView    # <- exact import the checker expects
-from .models import Book, Library                     # <- make sure Library is imported
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse
+from django.views.generic.detail import DetailView
+from django.contrib.auth import login, logout
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import LoginView, LogoutView
 
-# Function-based view to list all books
+from .models import Book, Library
+
+# ----------------------
+# Function-based view
+# ----------------------
 def list_books(request):
-    books = Book.objects.all()  # checker also looks for this exact call
-    return render(request, "relationship_app/list_books.html", {"books": books})
-
-# Class-based view to display details of a specific library
-class LibraryDetailView(DetailView):
-    model = Library
-    template_name = "relationship_app/library_detail.html"
-    context_object_name = "library"
+    books = Book.objects.all()
+    return render(request, "r
