@@ -1,14 +1,16 @@
+# urls.py (relationship_app)
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 from . import views
 
 urlpatterns = [
-    # Book and Library views
+    # function-based view
     path("books/", views.list_books, name="list-books"),
+
+    # class-based detail view
     path("library/<int:pk>/", views.LibraryDetailView.as_view(), name="library-detail"),
 
-    # Authentication views (checker wants this format)
-    path("register/", views.register, name="register"),
+    # (auth routes are optional here if you already have them)
     path("login/", LoginView.as_view(template_name="relationship_app/login.html"), name="login"),
     path("logout/", LogoutView.as_view(template_name="relationship_app/logout.html"), name="logout"),
 ]
