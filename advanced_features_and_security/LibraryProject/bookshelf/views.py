@@ -87,3 +87,11 @@ def example_form_view(request):
         form = ExampleForm()
 
     return render(request, "bookshelf/form_example.html", {"form": form})
+
+
+
+@login_required
+@permission_required('bookshelf.view_book', raise_exception=True)  # Only users with "view_book" permission can see the list
+def book_list(request):
+    books = Book.objects.all()  # Secure ORM query (prevents SQL injection)
+    return render(request, 'bookshelf/book_list.html', {'books': books})
