@@ -161,3 +161,11 @@ CSRF_COOKIE_SECURE = True
 X_FRAME_OPTIONS = "DENY"
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
+
+# Trust the X-Forwarded-Proto header set by the proxy (for HTTPS handling)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Additional recommended headers:
+X_FRAME_OPTIONS = 'DENY'  # Prevent clickjacking
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevent MIME type sniffing
+SECURE_BROWSER_XSS_FILTER = True  # Enable the browser’s XSS filter
