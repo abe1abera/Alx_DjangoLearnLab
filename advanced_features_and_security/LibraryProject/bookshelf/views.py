@@ -59,3 +59,31 @@ def book_list(request):
     output = ", ".join(f"{b.title} by {b.author}" for b in books)
     return HttpResponse(output)
 # --- END: compatibility function ---
+
+# --- Example form view (uses ExampleForm and includes CSRF in template) ---
+from django.shortcuts import render
+from .forms import ExampleForm
+from .models import Book  # using ORM, not raw SQL
+
+def example_form_view(request):
+    """
+    Renders ExampleForm and handles submission. Uses Django forms for validation
+    so inputs are cleaned (protects against injection/unsafe input).
+    """
+    if request.method == "POST":
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            # Example of safe ORM usage: create Book only when needed (no raw SQL)
+            # Book.objects.create(title=f"Submitted by {name}", author=email)  # optional
+            return render(request, "bookshelf/form_example.html", {
+                "form": form,
+                "success": True,
+                "name": name,
+                "email": email,
+            })
+    else:
+        form = ExampleForm()
+
+    return render(request, "bookshelf/form_example.html", {"form": form})

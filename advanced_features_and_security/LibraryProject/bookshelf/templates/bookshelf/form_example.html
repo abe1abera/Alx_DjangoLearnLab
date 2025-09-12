@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Example Form</title>
+</head>
+<body>
+    <h1>Submit Example Form</h1>
+
+    {% if success %}
+        <p>✅ Thank you, {{ name }} ({{ email }})!</p>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}   <!-- CSRF protection (required) -->
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

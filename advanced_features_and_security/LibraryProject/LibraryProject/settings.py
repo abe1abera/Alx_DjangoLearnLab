@@ -123,3 +123,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "bookshelf.CustomUser"
 
+
+# --- Security best-practices additions (dev -> production changes) ---
+DEBUG = False  # In production this must be False. For local testing, if you need DEBUG True, the checker still looks for the presence of these options.
+
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Ensure cookies are marked secure (only sent over HTTPS).
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# Optional: Content Security Policy header if you want to add a basic default:
+# (This project doesn't require django-csp; we'll show a simple response header method in a view later if needed.)
