@@ -16,3 +16,4 @@ class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 # List and Detail: Anyone can read
 # List and Detail: Anyone can read
+# List and Detail: Anyone can read
