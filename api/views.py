@@ -15,3 +15,4 @@ class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]  # ✅ only authenticated users can update/delete
 
 # List and Detail: Anyone can read
+# List and Detail: Anyone can read
