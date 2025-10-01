@@ -30,3 +30,27 @@ class AuthorDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+
+
+from rest_framework import generics, filters
+from django_filters.rest_framework import DjangoFilterBackend
+from .models import Book
+from .serializers import BookSerializer
+
+class BookListView(generics.ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+    # Filtering, searching, ordering
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+
+    # Allow filtering by these fields
+    filterset_fields = ['title', 'author', 'publication_year']
+
+    # Allow searching by these fields
+    search_fields = ['title', 'author']
+
+    # Allow ordering by these fields
+    ordering_fields = ['title', 'publication_year']
+    ordering = ['title']  # default ordering
