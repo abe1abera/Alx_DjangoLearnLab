@@ -28,3 +28,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('blog.urls')),  # 👈 this line connects blog.urls
 ]
+
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('blog.urls')),  # routes root to blog app
+]
