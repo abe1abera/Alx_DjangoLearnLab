@@ -185,3 +185,25 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     # Redirect back to the post detail page after saving
     def get_success_url(self):
         return reverse_lazy('post_detail', kwargs={'post_id': self.kwargs['post_id']})
+
+
+
+from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
+from taggit.models import Tag
+from .models import Post
+
+def search_posts(request):
+    q = request.GET.get('q', '').strip()
+    results = []
+    if q:
+        # Search title or content
+        results = Post.objects.filter(
+            Q(title__icontains=q) | Q(content__icontains=q) | Q(tags__name__icontains=q)
+        ).distinct()
+    return render(request, 'posts/search_results.html', {'query': q, 'results': results})
+
+def posts_by_tag(request, tag_slug):
+    tag = get_object_or_404(Tag, slug=tag_slug)
+    posts = Post.objects.filter(tags__slug__in=[tag_slug]).distinct()
+    return render(request, 'posts/posts_by_tag.html', {'tag': tag, 'posts': posts})

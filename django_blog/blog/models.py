@@ -29,3 +29,20 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Comment by {self.author.username} on {self.post.title}"
+from django.db import models
+from django.urls import reverse
+from taggit.managers import TaggableManager
+
+class Post(models.Model):
+    title = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True)
+    content = models.TextField()
+    # ... other fields: author, published_date, etc.
+
+    tags = TaggableManager(blank=True)  # <--- taggit field
+
+    def get_absolute_url(self):
+        return reverse('post-detail', kwargs={'slug': self.slug})
+
+    def __str__(self):
+        return self.title

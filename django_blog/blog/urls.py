@@ -77,3 +77,13 @@ urlpatterns = [
     # Delete a comment
     path('comments/<int:pk>/delete/', CommentDeleteView.as_view(), name='delete_comment'),
 ]
+
+
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('search/', views.search_posts, name='post-search'),
+    # using tag name in the URL:
+    path('tags/<str:tag_name>/', views.posts_by_tag, name='posts-by-tag'),
+]

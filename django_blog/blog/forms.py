@@ -46,3 +46,15 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['content']
+
+
+from django import forms
+from .models import Post
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'slug', 'content', 'tags']  # include tags
+        widgets = {
+            'tags': forms.TextInput(attrs={'placeholder': 'Comma separated tags'}),
+        }
