@@ -21,12 +21,13 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 ]
 
-
+# advanced_api_project/urls.py
 from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('api.urls')),  # mount API at /api/
-    path('api-auth/', include('rest_framework.urls')),  # optional login for browsable API
+    path('api/', include('api.urls')),   # <- make sure this line exists and points to your app
+    path('api-auth/', include('rest_framework.urls')),  # optional: browsable API login
 ]
+

@@ -10,23 +10,16 @@ urlpatterns = [
     path('', include(router.urls)),
 ]
 
+
+
+# api/urls.py
 from django.urls import path
-from .views import (
-    BookListView,
-    BookDetailView,
-    BookCreateView,
-    BookUpdateView,
-    BookDeleteView
-)
+from . import views
 
 urlpatterns = [
-    # List and create share the same collection endpoint (/api/books/) in some designs.
-    # Here we keep explicit separate endpoints to follow your task spec.
-    path('books/', BookListView.as_view(), name='book-list'),
-    path('books/create/', BookCreateView.as_view(), name='book-create'),
-
-    # Detail, update, delete by primary key
-    path('books/<int:pk>/', BookDetailView.as_view(), name='book-detail'),
-    path('books/<int:pk>/update/', BookUpdateView.as_view(), name='book-update'),
-    path('books/<int:pk>/delete/', BookDeleteView.as_view(), name='book-delete'),
+    path('books/', views.ListView.as_view(), name='book-list'),
+    path('books/create/', views.CreateView.as_view(), name='book-create'),
+    path('books/<int:pk>/', views.DetailView.as_view(), name='book-detail'),
+    path('books/<int:pk>/update/', views.UpdateView.as_view(), name='book-update'),
+    path('books/<int:pk>/delete/', views.DeleteView.as_view(), name='book-delete'),
 ]
