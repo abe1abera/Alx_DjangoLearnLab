@@ -1,0 +1,16 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<h2>Profile</h2>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <label>Username: {{ user.username }}</label><br>
+  <label>Email: </label>
+  <input type="email" name="email" value="{{ user.email }}"><br><br>
+
+  {% if pform %}
+    {{ pform.as_p }}
+  {% endif %}
+
+  <button type="submit">Save</button>
+</form>
+{% endblock %}
