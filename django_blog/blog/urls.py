@@ -62,3 +62,18 @@ urlpatterns = [
     # delete a comment
     path('post/comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment-delete'),
 ]
+
+
+from django.urls import path
+from .views import CommentCreateView, CommentUpdateView, CommentDeleteView
+
+urlpatterns = [
+    # Create a new comment
+    path('post/<int:pk>/comments/new/', CommentCreateView.as_view(), name='add_comment'),
+
+    # Edit a comment
+    path('comments/<int:pk>/edit/', CommentUpdateView.as_view(), name='edit_comment'),
+
+    # Delete a comment
+    path('comments/<int:pk>/delete/', CommentDeleteView.as_view(), name='delete_comment'),
+]
