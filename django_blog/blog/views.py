@@ -207,3 +207,61 @@ def posts_by_tag(request, tag_slug):
     tag = get_object_or_404(Tag, slug=tag_slug)
     posts = Post.objects.filter(tags__slug__in=[tag_slug]).distinct()
     return render(request, 'posts/posts_by_tag.html', {'tag': tag, 'posts': posts})
+
+
+# blog/views.py
+from django.shortcuts import get_object_or_404, render
+from django.views.generic import ListView
+from django.db.models import Q
+from .models import Post
+
+# If you're using django-taggit, Tag exists in taggit.models
+try:
+    from taggit.models import Tag as TagModel
+except Exception:
+    TagModel = None
+
+
+class PostByTagListView(ListView):
+    """
+    Lists posts that have the tag identified by tag_slug.
+
+    Behavior:
+    - If django-taggit is installed and Tag has a slug attribute, it will try to filter
+      by tag slug: posts = Post.objects.filter(tags__slug=tag_slug)
+    - Otherwise it will fallback to filtering by tag name (case-insensitive):
+      posts = Post.objects.filter(tags__name__iexact=tag_slug)
+    """
+    model = Post
+    template_name = 'posts/posts_by_tag.html'  # adjust path to your template
+    context_object_name = 'posts'
+    paginate_by = 10  # optional
+
+    def get_queryset(self):
+        tag_slug = self.kwargs.get('tag_slug')
+        if not tag_slug:
+            return Post.objects.none()
+
+        # Try slug-based lookup first (common if you extended Tag or created custom Tag model)
+        qs = Post.objects.none()
+        # Attempt slug-based filtering (works if Tag has slug field)
+        try:
+            qs = Post.objects.filter(tags__slug=tag_slug).distinct()
+            if qs.exists():
+                return qs
+        except Exception:
+            # ignore and try name-based filtering
+            pass
+
+        # Fallback: filter by tag name (case-insensitive)
+        try:
+            qs = Post.objects.filter(tags__name__iexact=tag_slug).distinct()
+            return qs
+        except Exception:
+            return Post.objects.none()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tag_slug'] = self.kwargs.get('tag_slug')
+        return context
+
